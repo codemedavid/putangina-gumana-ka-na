@@ -149,6 +149,23 @@ export const usePaymentMethods = () => {
 
   useEffect(() => {
     fetchPaymentMethods();
+
+    // Subscribe to real-time changes
+    const paymentMethodsSubscription = supabase
+      .channel('payment_methods_changes')
+      .on('postgres_changes',
+        { event: '*', schema: 'public', table: 'payment_methods' },
+        () => {
+          console.log('Payment methods changed, refetching...');
+          fetchPaymentMethods();
+        }
+      )
+      .subscribe();
+
+    // Cleanup subscription on unmount
+    return () => {
+      supabase.removeChannel(paymentMethodsSubscription);
+    };
   }, []);
 
   return {

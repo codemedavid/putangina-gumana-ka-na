@@ -9,6 +9,35 @@ export function useMenu() {
 
   useEffect(() => {
     fetchProducts();
+
+    // Subscribe to real-time changes
+    const productsSubscription = supabase
+      .channel('products_changes')
+      .on('postgres_changes', 
+        { event: '*', schema: 'public', table: 'products' }, 
+        () => {
+          console.log('Products changed, refetching...');
+          fetchProducts();
+        }
+      )
+      .subscribe();
+
+    const variationsSubscription = supabase
+      .channel('variations_changes')
+      .on('postgres_changes',
+        { event: '*', schema: 'public', table: 'product_variations' },
+        () => {
+          console.log('Variations changed, refetching...');
+          fetchProducts();
+        }
+      )
+      .subscribe();
+
+    // Cleanup subscriptions on unmount
+    return () => {
+      supabase.removeChannel(productsSubscription);
+      supabase.removeChannel(variationsSubscription);
+    };
   }, []);
 
   const fetchProducts = async () => {

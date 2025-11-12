@@ -135,6 +135,23 @@ export const useCategories = () => {
 
   useEffect(() => {
     fetchCategories();
+
+    // Subscribe to real-time changes
+    const categoriesSubscription = supabase
+      .channel('categories_changes')
+      .on('postgres_changes',
+        { event: '*', schema: 'public', table: 'categories' },
+        () => {
+          console.log('Categories changed, refetching...');
+          fetchCategories();
+        }
+      )
+      .subscribe();
+
+    // Cleanup subscription on unmount
+    return () => {
+      supabase.removeChannel(categoriesSubscription);
+    };
   }, []);
 
   return {
