@@ -91,3 +91,22 @@ export interface OrderDetails {
   payment_method: string;
   notes?: string;
 }
+
+// COA Report Types
+export interface COAReport {
+  id: string;
+  product_name: string;
+  batch_number: string | null;
+  quantity_mg: number | null;
+  purity_percentage: number;
+  verification_key: string | null;
+  verification_url: string | null;
+  report_image_url: string;
+  lab_name: string;
+  test_date: string | null;
+  featured: boolean;
+  sort_order: number;
+  active: boolean;
+  created_at: string;
+  updated_at: string;
+}

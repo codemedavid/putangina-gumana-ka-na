@@ -1,0 +1,102 @@
+-- Insert sample COA reports for demonstration
+-- Note: Replace the report_image_url with actual image URLs from your storage
+
+INSERT INTO coa_reports (
+  product_name,
+  batch_number,
+  quantity_mg,
+  purity_percentage,
+  verification_key,
+  verification_url,
+  report_image_url,
+  lab_name,
+  test_date,
+  featured,
+  sort_order,
+  active
+) VALUES
+(
+  'BPC-157',
+  'BPC-2024-001',
+  5.0,
+  99.8,
+  'JAN-BPC157-2024-001',
+  'https://janoshik.com/tests/verify/JAN-BPC157-2024-001',
+  'https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=800&h=1000&fit=crop',
+  'Janoshik',
+  '2024-01-15',
+  true,
+  1,
+  true
+),
+(
+  'Tirzepatide',
+  'TIRZ-2024-002',
+  10.0,
+  99.5,
+  'JAN-TIRZ-2024-002',
+  'https://janoshik.com/tests/verify/JAN-TIRZ-2024-002',
+  'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=1000&fit=crop',
+  'Janoshik',
+  '2024-01-20',
+  true,
+  2,
+  true
+),
+(
+  'Semaglutide',
+  'SEM-2024-003',
+  5.0,
+  99.9,
+  'JAN-SEM-2024-003',
+  'https://janoshik.com/tests/verify/JAN-SEM-2024-003',
+  'https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=800&h=1000&fit=crop',
+  'Janoshik',
+  '2024-01-25',
+  false,
+  3,
+  true
+),
+(
+  'Ipamorelin',
+  'IPA-2024-004',
+  2.0,
+  99.7,
+  'JAN-IPA-2024-004',
+  NULL,
+  'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=800&h=1000&fit=crop',
+  'Janoshik',
+  '2024-02-01',
+  false,
+  4,
+  true
+),
+(
+  'CJC-1295',
+  'CJC-2024-005',
+  2.0,
+  99.6,
+  NULL,
+  'https://janoshik.com/tests/verify/CJC-2024-005',
+  'https://images.unsplash.com/photo-1576678927484-cc907957088c?w=800&h=1000&fit=crop',
+  'Janoshik',
+  '2024-02-05',
+  false,
+  5,
+  true
+),
+(
+  'GHK-Cu',
+  'GHK-2024-006',
+  50.0,
+  99.4,
+  'JAN-GHK-2024-006',
+  'https://janoshik.com/tests/verify/JAN-GHK-2024-006',
+  'https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=800&h=1000&fit=crop',
+  'Janoshik',
+  '2024-02-10',
+  true,
+  6,
+  true
+);
+

@@ -10,6 +10,7 @@ import Checkout from './components/Checkout';
 import FloatingCartButton from './components/FloatingCartButton';
 import Footer from './components/Footer';
 import AdminDashboard from './components/AdminDashboard';
+import COAPage from './components/COAPage';
 import { useMenu } from './hooks/useMenu';
 
 function MainApp() {
@@ -98,6 +99,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MainApp />} />
         <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/coa" element={<COAPage />} />
       </Routes>
     </Router>
   );

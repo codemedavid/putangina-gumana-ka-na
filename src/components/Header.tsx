@@ -62,6 +62,12 @@ const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClic
                   Products
                 </button>
                 <a
+                  href="/coa"
+                  className="px-3 py-2 lg:px-4 lg:py-2 text-sm lg:text-base text-gray-700 hover:text-teal-600 hover:bg-teal-50 rounded-xl transition-all font-medium"
+                >
+                  COA Reports
+                </a>
+                <a
                   href={messengerUrl}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -121,6 +127,13 @@ const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClic
                 >
                   🧪 Products
                 </button>
+                <a
+                  href="/coa"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-left px-4 py-2.5 text-gray-700 hover:bg-teal-50 rounded-xl transition-colors font-medium text-sm border-2 border-transparent hover:border-teal-200"
+                >
+                  🛡️ COA Reports
+                </a>
                 <a
                   href={messengerUrl}
                   target="_blank"
