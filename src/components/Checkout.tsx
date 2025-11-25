@@ -120,19 +120,10 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
   };
 
   const generateMessengerUrl = (): string => {
-    // Facebook Page: Kaedra PH
+    // Match EXACT format from Header.tsx and Footer.tsx (which work)
     const facebookPageId = '61573812453289';
-    
-    // Try without text parameter first - sometimes page IDs don't support ?text=
-    // User can paste the order details manually (already copied to clipboard)
-    return `https://m.me/${facebookPageId}`;
-    
-    // Alternative: If you want to try with a pre-filled message:
-    // const messengerMessage = encodeURIComponent('Hi! I have a new order.');
-    // return `https://m.me/${facebookPageId}?text=${messengerMessage}`;
-    
-    // If you have a Page username (check: Facebook Page → About → Username):
-    // return `https://m.me/YourUsername?text=${messengerMessage}`;
+    const messengerMessage = encodeURIComponent('Hi! I have a new order.');
+    return `https://m.me/${facebookPageId}?text=${messengerMessage}`;
   };
 
   const handleCopyOrderDetails = async () => {
@@ -195,21 +186,11 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
       alert('Failed to copy order details. Please copy them manually from the confirmation page.');
     }
     
-    // Generate Messenger URL (matching working Footer format exactly)
-    const messengerUrl = generateMessengerUrl();
-    
-    // Use the same simple approach as the working Footer - direct window.open
-    // This matches the pattern that works in Footer.tsx
-    try {
-      window.open(messengerUrl, '_blank', 'noopener,noreferrer');
-    } catch (error) {
-      console.error('Failed to open Messenger:', error);
-      // Fallback: show alert with manual instructions
-      alert('Please click the "Open Messenger" button on the confirmation page to send your order.');
-    }
-    
-    // Show confirmation
+    // Show confirmation page first - let user click the link (user-initiated = works better)
     setStep('confirmation');
+    
+    // Don't auto-open - let the user click the button on confirmation page
+    // This ensures the click is user-initiated, which Messenger requires for messages to send
   };
 
   if (step === 'confirmation') {
