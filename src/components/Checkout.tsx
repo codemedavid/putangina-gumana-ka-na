@@ -123,9 +123,15 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
     const facebookPageId = '61573812453289';
     const messengerMessage = encodeURIComponent('Hi! I have a new order.');
     
-    // m.me format opens in Messenger app on mobile devices
-    // On desktop, it opens Messenger web (not Facebook website)
-    return `https://m.me/${facebookPageId}?text=${messengerMessage}`;
+    // Use the Facebook Messages format that works and navigates to the conversation
+    // On mobile with Messenger app installed, this will open in the app
+    // On desktop or without app, it opens Messenger web
+    return `https://www.facebook.com/messages/t/${facebookPageId}?text=${messengerMessage}`;
+    
+    // Note: To use m.me format (which works better), you need to set up a username:
+    // 1. Go to Facebook Page → Settings → Page Info → Username
+    // 2. Create a username (e.g., "KaedraPH")
+    // 3. Then use: `https://m.me/KaedraPH?text=${messengerMessage}`
   };
 
   const handleCopyOrderDetails = async () => {
