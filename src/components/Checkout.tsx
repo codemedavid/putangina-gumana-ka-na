@@ -121,10 +121,15 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
 
   const generateMessengerUrl = (): string => {
     const facebookPageId = '61573812453289';
-    // Match the exact format from working Footer example
-    // Use encodeURIComponent for proper URL encoding
     const messengerMessage = encodeURIComponent('Hi! I have a new order.');
-    return `https://m.me/${facebookPageId}?text=${messengerMessage}`;
+    
+    // Try Facebook Messages format - sometimes works better than m.me with page IDs
+    // This format: https://www.facebook.com/messages/t/PAGE_ID
+    return `https://www.facebook.com/messages/t/${facebookPageId}?text=${messengerMessage}`;
+    
+    // Alternative: If you have a Page username (like "renalyndv" in your working example),
+    // use this format instead: `https://m.me/your-username?text=${messengerMessage}`
+    // To find your username: Facebook Page → About → Username
   };
 
   const handleCopyOrderDetails = async () => {
