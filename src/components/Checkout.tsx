@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, ShieldCheck, Package, CreditCard, Sparkles, Heart, Copy, Check } from 'lucide-react';
+import { ArrowLeft, ShieldCheck, Package, CreditCard, Sparkles, Heart, Copy, Check, MessageCircle } from 'lucide-react';
 import type { CartItem } from '../types';
 import { usePaymentMethods } from '../hooks/usePaymentMethods';
 
@@ -147,12 +147,13 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
   const handlePlaceOrder = () => {
     const orderDetails = generateOrderDetails();
 
-    // Send order to Facebook
+    // Send order to Facebook Messenger
+    const facebookPageId = '61573812453289';
     const encodedMessage = encodeURIComponent(orderDetails);
-    const facebookUrl = `https://www.facebook.com/profile.php?id=61573812453289&mibextid=wwXIfr&rdid=9Fg44L4fYQmAWLeq&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1Bp5noVPK1%2F%3Fmibextid%3DwwXIfr&text=${encodedMessage}`;
+    const messengerUrl = `https://m.me/${facebookPageId}?text=${encodedMessage}`;
     
-    // Open Facebook
-    window.open(facebookUrl, '_blank');
+    // Open Facebook Messenger
+    window.open(messengerUrl, '_blank');
     
     // Show confirmation
     setStep('confirmation');
@@ -176,36 +177,55 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
               We will confirm your order and send you the payment details shortly!
             </p>
 
-            {/* Copy Order Details Option */}
-            <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 mb-8 border-2 border-blue-100">
-              <p className="text-sm text-gray-700 mb-4 text-center">
-                <strong>Didn't receive the message?</strong> Copy your order details and send it manually:
-              </p>
-              <button
-                onClick={handleCopyOrderDetails}
-                className={`w-full py-3 rounded-xl font-bold text-base shadow-md hover:shadow-lg transform hover:scale-105 transition-all flex items-center justify-center gap-2 ${
-                  copied
-                    ? 'bg-gradient-to-r from-teal-400 to-teal-600 text-white'
-                    : 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white'
-                }`}
-              >
-                {copied ? (
-                  <>
-                    <Check className="w-5 h-5" />
-                    Order Details Copied!
-                  </>
-                ) : (
-                  <>
-                    <Copy className="w-5 h-5" />
-                    Copy Order Details
-                  </>
-                )}
-              </button>
-              {copied && (
-                <p className="text-sm text-teal-600 text-center mt-3 font-medium">
-                  ✓ Order details copied to clipboard! You can now paste it in Messenger or WhatsApp.
+            {/* Backup Options */}
+            <div className="space-y-4 mb-8">
+              {/* Messenger Link Option */}
+              <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-6 border-2 border-blue-100">
+                <p className="text-sm text-gray-700 mb-4 text-center">
+                  <strong>Didn't open Messenger automatically?</strong> Click below to open it manually:
                 </p>
-              )}
+                <a
+                  href={`https://m.me/61573812453289?text=${encodeURIComponent(generateOrderDetails())}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white py-3 rounded-xl font-bold text-base shadow-md hover:shadow-lg transform hover:scale-105 transition-all flex items-center justify-center gap-2"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  Open Messenger
+                </a>
+              </div>
+
+              {/* Copy Order Details Option */}
+              <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-6 border-2 border-purple-100">
+                <p className="text-sm text-gray-700 mb-4 text-center">
+                  <strong>Or copy your order details</strong> and send it manually:
+                </p>
+                <button
+                  onClick={handleCopyOrderDetails}
+                  className={`w-full py-3 rounded-xl font-bold text-base shadow-md hover:shadow-lg transform hover:scale-105 transition-all flex items-center justify-center gap-2 ${
+                    copied
+                      ? 'bg-gradient-to-r from-teal-400 to-teal-600 text-white'
+                      : 'bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white'
+                  }`}
+                >
+                  {copied ? (
+                    <>
+                      <Check className="w-5 h-5" />
+                      Order Details Copied!
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-5 h-5" />
+                      Copy Order Details
+                    </>
+                  )}
+                </button>
+                {copied && (
+                  <p className="text-sm text-teal-600 text-center mt-3 font-medium">
+                    ✓ Order details copied to clipboard! You can now paste it in Messenger or WhatsApp.
+                  </p>
+                )}
+              </div>
             </div>
             
             <div className="bg-gradient-to-r from-teal-50 to-emerald-50 rounded-2xl p-6 mb-8 text-left border-2 border-teal-100">
