@@ -119,19 +119,13 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
     return orderDetails.trim();
   };
 
-  const generateMessengerUrl = (orderDetails: string): string => {
+  const generateMessengerUrl = (): string => {
     const facebookPageId = '61573812453289';
-    const encodedMessage = encodeURIComponent(orderDetails);
-    
-    // Check URL length (browsers have limits around 2000 characters)
-    // If message is too long, use a shorter version with instruction to paste
-    if (encodedMessage.length > 1500) {
-      // Use a shorter message with instruction
-      const shortMessage = `🧪 NEW ORDER REQUEST\n\nPlease see order details below. I will paste the full order details in the next message.\n\n---\n\n${orderDetails.substring(0, 500)}...\n\n[Full order details will be sent separately]`;
-      return `https://m.me/${61573812453289}?text=${encodeURIComponent(shortMessage)}`;
-    }
-    
-    return `https://m.me/${61573812453289}?text=${encodedMessage}`;
+    // Use a simple, short message that Messenger can reliably handle
+    // The full order details will be copied to clipboard for the user to paste
+    const shortMessage = '🧪 New Order - Please check your messages for order details';
+    const encodedMessage = encodeURIComponent(shortMessage);
+    return `https://m.me/${facebookPageId}?text=${encodedMessage}`;
   };
 
   const handleCopyOrderDetails = async () => {
@@ -159,9 +153,31 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
     }
   };
 
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
+    // First, copy the order details to clipboard automatically
     const orderDetails = generateOrderDetails();
-    const messengerUrl = generateMessengerUrl(orderDetails);
+    try {
+      await navigator.clipboard.writeText(orderDetails);
+      setCopied(true);
+    } catch (err) {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = orderDetails;
+      textArea.style.position = 'fixed';
+      textArea.style.opacity = '0';
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        setCopied(true);
+      } catch (fallbackErr) {
+        console.error('Failed to copy:', fallbackErr);
+      }
+      document.body.removeChild(textArea);
+    }
+    
+    // Then open Messenger with a simple message
+    const messengerUrl = generateMessengerUrl();
     
     // Use a more reliable method that works even with popup blockers
     // Create a temporary anchor element and click it
@@ -206,33 +222,41 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
               <Sparkles className="w-7 h-7 text-yellow-500" />
             </h1>
             <p className="text-gray-600 mb-6 text-base md:text-lg leading-relaxed">
-              Your order has been sent to our Facebook Messenger. 
+              Your order details have been copied to your clipboard! 
               <Heart className="inline w-5 h-5 text-pink-500 mx-1" />
-              We will confirm your order and send you the payment details shortly!
+              Messenger should open automatically - just paste the order details and send.
             </p>
+            {copied && (
+              <div className="bg-green-50 border-2 border-green-200 rounded-xl p-4 mb-6">
+                <p className="text-green-800 font-semibold flex items-center gap-2">
+                  <Check className="w-5 h-5" />
+                  Order details copied! Ready to paste in Messenger.
+                </p>
+              </div>
+            )}
 
             {/* Backup Options */}
             <div className="space-y-4 mb-8">
               {/* Messenger Link Option */}
               <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-6 border-2 border-blue-100">
                 <p className="text-sm text-gray-700 mb-4 text-center">
-                  <strong>Didn't open Messenger automatically?</strong> Click below to open it manually:
+                  <strong>Step 1:</strong> Click below to open Messenger, then <strong>paste</strong> your order details (already copied!)
                 </p>
                 <a
-                  href={generateMessengerUrl(generateOrderDetails())}
+                  href={generateMessengerUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white py-3 rounded-xl font-bold text-base shadow-md hover:shadow-lg transform hover:scale-105 transition-all flex items-center justify-center gap-2"
                 >
                   <MessageCircle className="w-5 h-5" />
-                  Open Messenger
+                  Open Messenger & Paste Order
                 </a>
               </div>
 
               {/* Copy Order Details Option */}
               <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-6 border-2 border-purple-100">
                 <p className="text-sm text-gray-700 mb-4 text-center">
-                  <strong>Or copy your order details</strong> and send it manually:
+                  <strong>Step 2:</strong> If you need to copy again, click below:
                 </p>
                 <button
                   onClick={handleCopyOrderDetails}
@@ -250,13 +274,13 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
                   ) : (
                     <>
                       <Copy className="w-5 h-5" />
-                      Copy Order Details
+                      Copy Order Details Again
                     </>
                   )}
                 </button>
                 {copied && (
                   <p className="text-sm text-teal-600 text-center mt-3 font-medium">
-                    ✓ Order details copied to clipboard! You can now paste it in Messenger or WhatsApp.
+                    ✓ Order details copied! Press Ctrl+V (or Cmd+V on Mac) to paste in Messenger.
                   </p>
                 )}
               </div>
