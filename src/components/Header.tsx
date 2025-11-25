@@ -10,10 +10,9 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClick }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Facebook Messenger Link
-  const facebookPageId = '61573812453289';
+  // Facebook Profile Link
   const messengerMessage = encodeURIComponent('Hi! I am interested in your peptide products.');
-  const messengerUrl = `https://m.me/${facebookPageId}?text=${messengerMessage}`;
+  const messengerUrl = `https://www.facebook.com/profile.php?id=61573812453289&mibextid=wwXIfr&rdid=9Fg44L4fYQmAWLeq&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1Bp5noVPK1%2F%3Fmibextid%3DwwXIfr&text=${messengerMessage}`;
 
   return (
     <>

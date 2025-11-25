@@ -307,7 +307,7 @@ const AdminDashboard: React.FC = () => {
             onClose={() => setManagingVariationsFor(null)}
           />
         )}
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
         <div className="bg-white/90 backdrop-blur-sm shadow-lg border-b-2 border-blue-100">
           <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
             <div className="flex items-center justify-between h-14 md:h-16 gap-2">
@@ -611,7 +611,7 @@ const AdminDashboard: React.FC = () => {
             onClose={() => setManagingVariationsFor(null)}
           />
         )}
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
         <div className="bg-white/90 backdrop-blur-sm shadow-lg border-b-2 border-blue-100">
           <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
             <div className="flex items-center justify-between h-14 md:h-16">

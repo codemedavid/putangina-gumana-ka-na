@@ -147,13 +147,12 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
   const handlePlaceOrder = () => {
     const orderDetails = generateOrderDetails();
 
-    // Send order to Facebook Messenger
-    const facebookPageId = '61573812453289';
+    // Send order to Facebook
     const encodedMessage = encodeURIComponent(orderDetails);
-    const messengerUrl = `https://m.me/${facebookPageId}?text=${encodedMessage}`;
+    const facebookUrl = `https://www.facebook.com/profile.php?id=61573812453289&mibextid=wwXIfr&rdid=9Fg44L4fYQmAWLeq&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1Bp5noVPK1%2F%3Fmibextid%3DwwXIfr&text=${encodedMessage}`;
     
-    // Open Facebook Messenger
-    window.open(messengerUrl, '_blank');
+    // Open Facebook
+    window.open(facebookUrl, '_blank');
     
     // Show confirmation
     setStep('confirmation');
@@ -179,19 +178,19 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
 
             {/* Backup Options */}
             <div className="space-y-4 mb-8">
-              {/* Messenger Link Option */}
+              {/* Facebook Link Option */}
               <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-6 border-2 border-blue-100">
                 <p className="text-sm text-gray-700 mb-4 text-center">
-                  <strong>Didn't open Messenger automatically?</strong> Click below to open it manually:
+                  <strong>Didn't open Facebook automatically?</strong> Click below to open it manually:
                 </p>
                 <a
-                  href={`https://m.me/61573812453289?text=${encodeURIComponent(generateOrderDetails())}`}
+                  href={`https://www.facebook.com/profile.php?id=61573812453289&mibextid=wwXIfr&rdid=9Fg44L4fYQmAWLeq&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1Bp5noVPK1%2F%3Fmibextid%3DwwXIfr&text=${encodeURIComponent(generateOrderDetails())}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white py-3 rounded-xl font-bold text-base shadow-md hover:shadow-lg transform hover:scale-105 transition-all flex items-center justify-center gap-2"
                 >
                   <MessageCircle className="w-5 h-5" />
-                  Open Messenger
+                  Open Facebook
                 </a>
               </div>
 
@@ -590,13 +589,13 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3">
-              <button
-                onClick={handlePlaceOrder}
+            <button
+              onClick={handlePlaceOrder}
                 className="flex-1 bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:from-green-500 hover:via-green-600 hover:to-green-700 text-white py-3 md:py-4 rounded-2xl font-bold text-base md:text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all flex items-center justify-center gap-2"
-              >
-                <ShieldCheck className="w-5 h-5 md:w-6 md:h-6" />
-                Send Order via Messenger
-              </button>
+            >
+              <ShieldCheck className="w-5 h-5 md:w-6 md:h-6" />
+              Send Order via Messenger
+            </button>
               <button
                 onClick={handleCopyOrderDetails}
                 className={`flex-1 py-3 md:py-4 rounded-2xl font-bold text-base md:text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all flex items-center justify-center gap-2 ${
