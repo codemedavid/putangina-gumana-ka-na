@@ -120,11 +120,12 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
   };
 
   const generateMessengerUrl = (): string => {
-    // Use Facebook Messages format: https://www.facebook.com/messages/t/PAGE_ID
     const facebookPageId = '61573812453289';
     const messengerMessage = encodeURIComponent('Hi! I have a new order.');
-    // Facebook Messages format works better than m.me for page IDs
-    return `https://www.facebook.com/messages/t/${facebookPageId}?text=${messengerMessage}`;
+    
+    // m.me format opens in Messenger app on mobile devices
+    // On desktop, it opens Messenger web (not Facebook website)
+    return `https://m.me/${facebookPageId}?text=${messengerMessage}`;
   };
 
   const handleCopyOrderDetails = async () => {
@@ -174,7 +175,7 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
       try {
         const successful = document.execCommand('copy');
         if (successful) {
-          setCopied(true);
+        setCopied(true);
           copySuccess = true;
         }
       } catch (fallbackErr) {
