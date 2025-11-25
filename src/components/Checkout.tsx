@@ -121,19 +121,10 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
 
   const generateMessengerUrl = (): string => {
     const facebookPageId = '61573812453289';
-    // Use a very short message to avoid Messenger spam filters
-    // Full order details are copied to clipboard for user to paste
-    const initialMessage = encodeURIComponent('Hi! I have a new order.');
-    
-    // Try m.me format first (works on mobile and desktop)
-    return `https://m.me/${facebookPageId}?text=${initialMessage}`;
-  };
-
-  const generateAlternativeMessengerUrl = (): string => {
-    const facebookPageId = '61573812453289';
-    // Alternative format using facebook.com/messages (sometimes works better)
-    const initialMessage = encodeURIComponent('Hi! I have a new order.');
-    return `https://www.facebook.com/messages/t/${facebookPageId}?text=${initialMessage}`;
+    // Match the exact format from working Footer example
+    // Use encodeURIComponent for proper URL encoding
+    const messengerMessage = encodeURIComponent('Hi! I have a new order.');
+    return `https://m.me/${facebookPageId}?text=${messengerMessage}`;
   };
 
   const handleCopyOrderDetails = async () => {
@@ -196,51 +187,17 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
       alert('Failed to copy order details. Please copy them manually from the confirmation page.');
     }
     
-    // Then open Messenger with a pre-filled message
+    // Generate Messenger URL (matching working Footer format exactly)
     const messengerUrl = generateMessengerUrl();
     
-    // Try multiple methods to open Messenger
-    let messengerOpened = false;
-    
-    // Method 1: Try direct window.open (most reliable)
+    // Use the same simple approach as the working Footer - direct window.open
+    // This matches the pattern that works in Footer.tsx
     try {
-      const opened = window.open(messengerUrl, '_blank', 'noopener,noreferrer');
-      if (opened) {
-        messengerOpened = true;
-      }
+      window.open(messengerUrl, '_blank', 'noopener,noreferrer');
     } catch (error) {
-      console.error('window.open failed:', error);
-    }
-    
-    // Method 2: If window.open failed, try creating and clicking a link
-    if (!messengerOpened) {
-      try {
-        const link = document.createElement('a');
-        link.href = messengerUrl;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        link.style.display = 'none';
-        document.body.appendChild(link);
-        link.click();
-        messengerOpened = true;
-        // Clean up after a delay
-        setTimeout(() => {
-          if (document.body.contains(link)) {
-            document.body.removeChild(link);
-          }
-        }, 1000);
-      } catch (error) {
-        console.error('Link click method failed:', error);
-      }
-    }
-    
-    // Method 3: Try location.href as last resort (will navigate away)
-    if (!messengerOpened) {
-      // Only use this if user confirms, otherwise show instructions
-      if (confirm('Unable to open Messenger automatically. Would you like to navigate to Messenger now? (You can also use the button on the confirmation page)')) {
-        window.location.href = messengerUrl;
-        return; // Don't show confirmation page if navigating away
-      }
+      console.error('Failed to open Messenger:', error);
+      // Fallback: show alert with manual instructions
+      alert('Please click the "Open Messenger" button on the confirmation page to send your order.');
     }
     
     // Show confirmation
@@ -276,41 +233,25 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
 
             {/* Backup Options */}
             <div className="space-y-4 mb-8">
-              {/* Messenger Link Option */}
+              {/* Messenger Link Option - Match working Footer format exactly */}
               <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-6 border-2 border-blue-100">
                 <p className="text-sm text-gray-700 mb-4 text-center">
                   <strong>Open Messenger</strong> - Your order is already copied! Just paste (Ctrl+V / Cmd+V) and send.
                 </p>
-                <div className="space-y-2">
-                  <a
-                    href={generateMessengerUrl()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white py-3 rounded-xl font-bold text-base shadow-md hover:shadow-lg transform hover:scale-105 transition-all flex items-center justify-center gap-2"
-                    onClick={(e) => {
-                      // Try to ensure the link opens properly
-                      e.preventDefault();
-                      window.open(generateMessengerUrl(), '_blank', 'noopener,noreferrer');
-                    }}
-                  >
-                    <MessageCircle className="w-5 h-5" />
-                    Open Messenger (m.me)
-                  </a>
-                  <a
-                    href={generateAlternativeMessengerUrl()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white py-3 rounded-xl font-bold text-sm shadow-md hover:shadow-lg transform hover:scale-105 transition-all flex items-center justify-center gap-2"
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                    Alternative: Open Facebook Messages
-                  </a>
-                </div>
+                <a
+                  href={generateMessengerUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white py-3 rounded-xl font-bold text-base shadow-md hover:shadow-lg transform hover:scale-105 transition-all flex items-center justify-center gap-2"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  Open Messenger
+                </a>
                 <p className="text-xs text-gray-600 text-center mt-3">
                   💡 Tip: After opening, press <strong>Ctrl+V</strong> (Windows) or <strong>Cmd+V</strong> (Mac) to paste your order details
                 </p>
-                <p className="text-xs text-red-600 text-center mt-2 font-medium">
-                  ⚠️ If the message doesn't appear, just paste your order details manually (they're already copied!)
+                <p className="text-xs text-gray-500 text-center mt-2">
+                  The message should appear automatically. If not, just paste your order details (already copied to clipboard).
                 </p>
               </div>
 
