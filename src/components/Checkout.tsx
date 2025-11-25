@@ -119,6 +119,21 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
     return orderDetails.trim();
   };
 
+  const generateMessengerUrl = (orderDetails: string): string => {
+    const facebookPageId = '61573812453289';
+    const encodedMessage = encodeURIComponent(orderDetails);
+    
+    // Check URL length (browsers have limits around 2000 characters)
+    // If message is too long, use a shorter version with instruction to paste
+    if (encodedMessage.length > 1500) {
+      // Use a shorter message with instruction
+      const shortMessage = `🧪 NEW ORDER REQUEST\n\nPlease see order details below. I will paste the full order details in the next message.\n\n---\n\n${orderDetails.substring(0, 500)}...\n\n[Full order details will be sent separately]`;
+      return `https://m.me/${facebookPageId}?text=${encodeURIComponent(shortMessage)}`;
+    }
+    
+    return `https://m.me/${facebookPageId}?text=${encodedMessage}`;
+  };
+
   const handleCopyOrderDetails = async () => {
     try {
       const orderDetails = generateOrderDetails();
@@ -146,14 +161,33 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
 
   const handlePlaceOrder = () => {
     const orderDetails = generateOrderDetails();
-
-    // Send order to Facebook Messenger (m.me format supports pre-filled messages)
-    const facebookPageId = '61573812453289';
-    const encodedMessage = encodeURIComponent(orderDetails);
-    const messengerUrl = `https://m.me/${facebookPageId}?text=${encodedMessage}`;
+    const messengerUrl = generateMessengerUrl(orderDetails);
     
-    // Open Facebook Messenger
-    window.open(messengerUrl, '_blank');
+    // Use a more reliable method that works even with popup blockers
+    // Create a temporary anchor element and click it
+    const link = document.createElement('a');
+    link.href = messengerUrl;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    
+    try {
+      link.click();
+      // Small delay to ensure the click is processed
+      setTimeout(() => {
+        document.body.removeChild(link);
+      }, 100);
+    } catch (error) {
+      console.error('Failed to open Messenger:', error);
+      // Fallback: try window.open
+      const opened = window.open(messengerUrl, '_blank');
+      if (!opened) {
+        // If popup was blocked, show alert with instructions
+        alert('Please allow popups for this site, or click the "Open Messenger" button on the confirmation page.');
+      }
+      document.body.removeChild(link);
+    }
     
     // Show confirmation
     setStep('confirmation');
@@ -185,7 +219,7 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
                   <strong>Didn't open Messenger automatically?</strong> Click below to open it manually:
                 </p>
                 <a
-                  href={`https://m.me/61573812453289?text=${encodeURIComponent(generateOrderDetails())}`}
+                  href={generateMessengerUrl(generateOrderDetails())}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white py-3 rounded-xl font-bold text-base shadow-md hover:shadow-lg transform hover:scale-105 transition-all flex items-center justify-center gap-2"
