@@ -128,10 +128,10 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
     if (encodedMessage.length > 1500) {
       // Use a shorter message with instruction
       const shortMessage = `🧪 NEW ORDER REQUEST\n\nPlease see order details below. I will paste the full order details in the next message.\n\n---\n\n${orderDetails.substring(0, 500)}...\n\n[Full order details will be sent separately]`;
-      return `https://m.me/${facebookPageId}?text=${encodeURIComponent(shortMessage)}`;
+      return `https://m.me/${61573812453289}?text=${encodeURIComponent(shortMessage)}`;
     }
     
-    return `https://m.me/${facebookPageId}?text=${encodedMessage}`;
+    return `https://m.me/${61573812453289}?text=${encodedMessage}`;
   };
 
   const handleCopyOrderDetails = async () => {
