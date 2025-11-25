@@ -121,11 +121,9 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
 
   const generateMessengerUrl = (): string => {
     const facebookPageId = '61573812453289';
-    // Use a simple, short message that Messenger can reliably handle
-    // The full order details will be copied to clipboard for the user to paste
-    const shortMessage = '🧪 New Order - Please check your messages for order details';
-    const encodedMessage = encodeURIComponent(shortMessage);
-    return `https://m.me/${facebookPageId}?text=${encodedMessage}`;
+    // Open Messenger without pre-filled text - Messenger blocks automated messages
+    // User will paste the order details manually from clipboard
+    return `https://m.me/${facebookPageId}`;
   };
 
   const handleCopyOrderDetails = async () => {
@@ -221,26 +219,27 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
               <span className="bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent">Order Sent!</span>
               <Sparkles className="w-7 h-7 text-yellow-500" />
             </h1>
-            <p className="text-gray-600 mb-6 text-base md:text-lg leading-relaxed">
-              Your order details have been copied to your clipboard! 
-              <Heart className="inline w-5 h-5 text-pink-500 mx-1" />
-              Messenger should open automatically - just paste the order details and send.
-            </p>
-            {copied && (
-              <div className="bg-green-50 border-2 border-green-200 rounded-xl p-4 mb-6">
-                <p className="text-green-800 font-semibold flex items-center gap-2">
-                  <Check className="w-5 h-5" />
-                  Order details copied! Ready to paste in Messenger.
-                </p>
-              </div>
-            )}
+            <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-200 rounded-xl p-6 mb-6">
+              <p className="text-gray-800 font-bold text-lg mb-3 flex items-center justify-center gap-2">
+                <Copy className="w-6 h-6 text-blue-600" />
+                Order Details Copied to Clipboard!
+              </p>
+              <p className="text-gray-700 text-base mb-4">
+                <strong>Important:</strong> Your order details are ready to paste. Follow these steps:
+              </p>
+              <ol className="text-left text-gray-700 space-y-2 text-sm md:text-base list-decimal list-inside">
+                <li>Messenger will open automatically (or click the button below)</li>
+                <li><strong>Press Ctrl+V (or Cmd+V on Mac)</strong> to paste your order</li>
+                <li>Click the send button to submit your order</li>
+              </ol>
+            </div>
 
             {/* Backup Options */}
             <div className="space-y-4 mb-8">
               {/* Messenger Link Option */}
               <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-6 border-2 border-blue-100">
                 <p className="text-sm text-gray-700 mb-4 text-center">
-                  <strong>Step 1:</strong> Click below to open Messenger, then <strong>paste</strong> your order details (already copied!)
+                  <strong>Open Messenger</strong> - Your order is already copied! Just paste (Ctrl+V / Cmd+V) and send.
                 </p>
                 <a
                   href={generateMessengerUrl()}
@@ -249,8 +248,11 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
                   className="w-full bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white py-3 rounded-xl font-bold text-base shadow-md hover:shadow-lg transform hover:scale-105 transition-all flex items-center justify-center gap-2"
                 >
                   <MessageCircle className="w-5 h-5" />
-                  Open Messenger & Paste Order
+                  Open Messenger
                 </a>
+                <p className="text-xs text-gray-600 text-center mt-3">
+                  💡 Tip: After opening, press <strong>Ctrl+V</strong> (Windows) or <strong>Cmd+V</strong> (Mac) to paste
+                </p>
               </div>
 
               {/* Copy Order Details Option */}
