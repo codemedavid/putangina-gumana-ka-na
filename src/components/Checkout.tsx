@@ -120,16 +120,19 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
   };
 
   const generateMessengerUrl = (): string => {
+    // Facebook Page: Kaedra PH
     const facebookPageId = '61573812453289';
-    const messengerMessage = encodeURIComponent('Hi! I have a new order.');
     
-    // Try Facebook Messages format - sometimes works better than m.me with page IDs
-    // This format: https://www.facebook.com/messages/t/PAGE_ID
-    return `https://www.facebook.com/messages/t/${facebookPageId}?text=${messengerMessage}`;
+    // Try without text parameter first - sometimes page IDs don't support ?text=
+    // User can paste the order details manually (already copied to clipboard)
+    return `https://m.me/${facebookPageId}`;
     
-    // Alternative: If you have a Page username (like "renalyndv" in your working example),
-    // use this format instead: `https://m.me/your-username?text=${messengerMessage}`
-    // To find your username: Facebook Page → About → Username
+    // Alternative: If you want to try with a pre-filled message:
+    // const messengerMessage = encodeURIComponent('Hi! I have a new order.');
+    // return `https://m.me/${facebookPageId}?text=${messengerMessage}`;
+    
+    // If you have a Page username (check: Facebook Page → About → Username):
+    // return `https://m.me/YourUsername?text=${messengerMessage}`;
   };
 
   const handleCopyOrderDetails = async () => {
