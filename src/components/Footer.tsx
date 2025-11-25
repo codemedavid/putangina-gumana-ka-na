@@ -4,10 +4,9 @@ import { MessageCircle, Shield, Heart, Sparkles } from 'lucide-react';
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
   
-  // Facebook Messenger Page ID
-  const facebookPageId = '61573812453289';
+  // Facebook Profile Link
   const messengerMessage = encodeURIComponent('Hi! I would like to inquire about your peptide products.');
-  const messengerUrl = `https://m.me/${facebookPageId}?text=${messengerMessage}`;
+  const messengerUrl = `https://www.facebook.com/profile.php?id=61573812453289&mibextid=wwXIfr&rdid=9Fg44L4fYQmAWLeq&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1Bp5noVPK1%2F%3Fmibextid%3DwwXIfr&text=${messengerMessage}`;
 
   return (
     <footer className="bg-gradient-to-r from-gray-800 to-gray-900 text-white">

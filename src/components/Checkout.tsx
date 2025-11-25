@@ -147,13 +147,12 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
   const handlePlaceOrder = () => {
     const orderDetails = generateOrderDetails();
 
-    // Send order to Facebook Messenger
-    const facebookPageId = '61573812453289';
+    // Send order to Facebook
     const encodedMessage = encodeURIComponent(orderDetails);
-    const messengerUrl = `https://m.me/${facebookPageId}?text=${encodedMessage}`;
+    const facebookUrl = `https://www.facebook.com/profile.php?id=61573812453289&mibextid=wwXIfr&rdid=9Fg44L4fYQmAWLeq&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1Bp5noVPK1%2F%3Fmibextid%3DwwXIfr&text=${encodedMessage}`;
     
-    // Open Facebook Messenger
-    window.open(messengerUrl, '_blank');
+    // Open Facebook
+    window.open(facebookUrl, '_blank');
     
     // Show confirmation
     setStep('confirmation');
