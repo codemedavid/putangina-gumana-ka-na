@@ -147,12 +147,13 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
   const handlePlaceOrder = () => {
     const orderDetails = generateOrderDetails();
 
-    // Send order to Facebook
+    // Send order to Facebook Messenger (m.me format supports pre-filled messages)
+    const facebookPageId = '61573812453289';
     const encodedMessage = encodeURIComponent(orderDetails);
-    const facebookUrl = `https://www.facebook.com/profile.php?id=61573812453289&mibextid=wwXIfr&rdid=9Fg44L4fYQmAWLeq&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1Bp5noVPK1%2F%3Fmibextid%3DwwXIfr&text=${encodedMessage}`;
+    const messengerUrl = `https://m.me/${facebookPageId}?text=${encodedMessage}`;
     
-    // Open Facebook
-    window.open(facebookUrl, '_blank');
+    // Open Facebook Messenger
+    window.open(messengerUrl, '_blank');
     
     // Show confirmation
     setStep('confirmation');
@@ -178,19 +179,19 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
 
             {/* Backup Options */}
             <div className="space-y-4 mb-8">
-              {/* Facebook Link Option */}
+              {/* Messenger Link Option */}
               <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-6 border-2 border-blue-100">
                 <p className="text-sm text-gray-700 mb-4 text-center">
-                  <strong>Didn't open Facebook automatically?</strong> Click below to open it manually:
+                  <strong>Didn't open Messenger automatically?</strong> Click below to open it manually:
                 </p>
                 <a
-                  href={`https://www.facebook.com/profile.php?id=61573812453289&mibextid=wwXIfr&rdid=9Fg44L4fYQmAWLeq&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1Bp5noVPK1%2F%3Fmibextid%3DwwXIfr&text=${encodeURIComponent(generateOrderDetails())}`}
+                  href={`https://m.me/61573812453289?text=${encodeURIComponent(generateOrderDetails())}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white py-3 rounded-xl font-bold text-base shadow-md hover:shadow-lg transform hover:scale-105 transition-all flex items-center justify-center gap-2"
                 >
                   <MessageCircle className="w-5 h-5" />
-                  Open Facebook
+                  Open Messenger
                 </a>
               </div>
 
