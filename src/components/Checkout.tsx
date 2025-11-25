@@ -120,10 +120,11 @@ ${paymentMethod ? `Account: ${paymentMethod.account_number}` : ''}`;
   };
 
   const generateMessengerUrl = (): string => {
-    // Match EXACT format from Header.tsx and Footer.tsx (which work)
+    // Use Facebook Messages format: https://www.facebook.com/messages/t/PAGE_ID
     const facebookPageId = '61573812453289';
     const messengerMessage = encodeURIComponent('Hi! I have a new order.');
-    return `https://m.me/${facebookPageId}?text=${messengerMessage}`;
+    // Facebook Messages format works better than m.me for page IDs
+    return `https://www.facebook.com/messages/t/${facebookPageId}?text=${messengerMessage}`;
   };
 
   const handleCopyOrderDetails = async () => {
